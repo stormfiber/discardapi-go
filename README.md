@@ -173,3 +173,73 @@ Qasim Ali
 GitHub: @GlobalTechInfo
 ## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+**.github/workflows/lint.yml**
+
+name: Lint
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  golangci:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+
+      - name: Format code
+        run: gofmt -s -w .
+
+      - name: Run golangci-lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest
+          args: --out-format=colored-line-number
+          
+**.github/workflows/test.yml**
+
+name: Test
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        go-version: [1.21.x, 1.22.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Install dependencies
+        run: go mod download
+
+      - name: Run short tests
+        shell: bash
+        run: go test -v -short -race -coverprofile=coverage.out -covermode=atomic ./...
+
+      - name: Upload coverage
+        if: matrix.os == 'ubuntu-latest' && matrix.go-version == '1.22.x'
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.out
+          
