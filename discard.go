@@ -59,19 +59,21 @@ func NewClient(config Config) (*Client, error) {
 
 // buildURL constructs the full URL with query parameters
 func (c *Client) buildURL(endpoint string, params map[string]interface{}) string {
-	u, _ := url.Parse(c.BaseURL + endpoint)
+	u, err := url.Parse(c.BaseURL + endpoint)
+	if err != nil {
+		fmt.Printf("failed to parse URL: %v\n", err)
+		return ""
+	}
+
 	q := u.Query()
-	
-	// Add API key
 	q.Set("apikey", c.APIKey)
-	
-	// Add other parameters
+
 	for key, value := range params {
 		if value != nil {
 			q.Set(key, fmt.Sprintf("%v", value))
 		}
 	}
-	
+
 	u.RawQuery = q.Encode()
 	return u.String()
 }
@@ -81,12 +83,14 @@ func (c *Client) makeRequest(method, endpoint string, params map[string]interfac
 	var req *http.Request
 	var err error
 
+	fullURL := c.buildURL(endpoint, params)
+	if fullURL == "" {
+		return nil, fmt.Errorf("invalid URL")
+	}
+
 	if method == "GET" {
-		fullURL := c.buildURL(endpoint, params)
 		req, err = http.NewRequest("GET", fullURL, nil)
 	} else {
-		fullURL := c.buildURL(endpoint, params)
-		
 		var jsonData []byte
 		if body != nil {
 			jsonData, err = json.Marshal(body)
@@ -94,7 +98,7 @@ func (c *Client) makeRequest(method, endpoint string, params map[string]interfac
 				return nil, fmt.Errorf("failed to marshal request body: %w", err)
 			}
 		}
-		
+
 		req, err = http.NewRequest(method, fullURL, bytes.NewBuffer(jsonData))
 		if body != nil {
 			req.Header.Set("Content-Type", "application/json")
@@ -109,7 +113,11 @@ func (c *Client) makeRequest(method, endpoint string, params map[string]interfac
 	if err != nil {
 		return nil, fmt.Errorf("request failed: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if cerr := resp.Body.Close(); cerr != nil {
+			fmt.Printf("failed to close response body: %v\n", cerr)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("HTTP error: status %d", resp.StatusCode)
@@ -128,11 +136,11 @@ func (c *Client) makeRequest(method, endpoint string, params map[string]interfac
 	if c.FullResponse {
 		return apiResp, nil
 	}
-	
+
 	if apiResp.Result != nil {
 		return apiResp.Result, nil
 	}
-	
+
 	return apiResp, nil
 }
 
@@ -141,12 +149,10 @@ func (c *Client) MakeFormDataRequest(endpoint string, params map[string]interfac
 	var buffer bytes.Buffer
 	writer := multipart.NewWriter(&buffer)
 
-	// Add API key
 	if err := writer.WriteField("apikey", c.APIKey); err != nil {
 		return nil, fmt.Errorf("failed to write apikey field: %w", err)
 	}
 
-	// Add parameters
 	for key, value := range params {
 		if value != nil {
 			if err := writer.WriteField(key, fmt.Sprintf("%v", value)); err != nil {
@@ -155,7 +161,6 @@ func (c *Client) MakeFormDataRequest(endpoint string, params map[string]interfac
 		}
 	}
 
-	// Add files
 	for fieldName, file := range files {
 		part, err := writer.CreateFormFile(fieldName, fieldName)
 		if err != nil {
@@ -180,7 +185,11 @@ func (c *Client) MakeFormDataRequest(endpoint string, params map[string]interfac
 	if err != nil {
 		return nil, fmt.Errorf("request failed: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() {
+		if cerr := resp.Body.Close(); cerr != nil {
+			fmt.Printf("failed to close response body: %v\n", cerr)
+		}
+	}()
 
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("HTTP error: status %d", resp.StatusCode)
@@ -199,6 +208,7 @@ func (c *Client) MakeFormDataRequest(endpoint string, params map[string]interfac
 	if c.FullResponse {
 		return apiResp, nil
 	}
+
 	return apiResp.Result, nil
 }
 
