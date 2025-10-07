@@ -22,6 +22,14 @@ func (c *Client) TextToPic(text string) (interface{}, error) {
 	return c.makeRequest("GET", "/api/maker/ttp", map[string]interface{}{"text": text}, nil)
 }
 
+func (c *Client) DesignFont(text string) (interface{}, error) {
+	return c.makeRequest("GET", "/api/design/font", map[string]interface{}{"text": text}, nil)
+}
+
+func (c *Client) WebLogo(url string) (interface{}, error) {
+	return c.makeRequest("GET", "/api/maker/weblogo", map[string]interface{}{"url": url}, nil)
+}
+
 func (c *Client) TextAvatar(text, shape string) (interface{}, error) {
 	params := map[string]interface{}{"text": text}
 	if shape != "" {
