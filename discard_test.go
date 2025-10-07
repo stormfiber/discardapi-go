@@ -29,8 +29,11 @@ func TestNewClient(t *testing.T) {
 }
 
 func TestSetFullResponse(t *testing.T) {
-	client, _ := NewClient(Config{APIKey: "test"})
-	
+	client, err := NewClient(Config{APIKey: "test"})
+	if err != nil {
+		t.Fatalf("failed to create client: %v", err)
+	}
+
 	client.SetFullResponse(true)
 	if !client.GetFullResponse() {
 		t.Error("Expected FullResponse to be true")
@@ -43,24 +46,30 @@ func TestSetFullResponse(t *testing.T) {
 }
 
 func TestSetTimeout(t *testing.T) {
-	client, _ := NewClient(Config{APIKey: "test"})
-	
+	client, err := NewClient(Config{APIKey: "test"})
+	if err != nil {
+		t.Fatalf("failed to create client: %v", err)
+	}
+
 	newTimeout := 60 * time.Second
 	client.SetTimeout(newTimeout)
-	
+
 	if client.HTTPClient.Timeout != newTimeout {
 		t.Errorf("Expected timeout to be %v, got %v", newTimeout, client.HTTPClient.Timeout)
 	}
 }
 
 func TestBuildURL(t *testing.T) {
-	client, _ := NewClient(Config{APIKey: "test-key"})
-	
+	client, err := NewClient(Config{APIKey: "test-key"})
+	if err != nil {
+		t.Fatalf("failed to create client: %v", err)
+	}
+
 	url := client.buildURL("/api/test", map[string]interface{}{
 		"param1": "value1",
 		"param2": 123,
 	})
-	
+
 	if url == "" {
 		t.Error("Expected non-empty URL")
 	}
