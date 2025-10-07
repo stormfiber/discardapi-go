@@ -38,6 +38,68 @@ func (c *Client) FakeAddresses(quantity int, locale, countryCode string, seed in
 	return c.makeRequest("GET", "/api/fake/addresses", params, nil)
 }
 
+func (c *Client) FakeTexts(quantity int, locale string, characters int, seed int) (interface{}, error) {
+	params := map[string]interface{}{}
+	if quantity > 0 {
+		params["_quantity"] = quantity
+	}
+	if locale != "" {
+		params["_locale"] = locale
+	}
+	if characters > 0 {
+		params["_characters"] = characters
+	}
+	if seed > 0 {
+		params["_seed"] = seed
+	}
+	return c.makeRequest("GET", "/api/fake/texts", params, nil)
+}
+
+func (c *Client) FakerPersons(quantity int, locale string, gender string, seed int) (interface{}, error) {
+	params := map[string]interface{}{}
+	if quantity > 0 {
+		params["_quantity"] = quantity
+	}
+	if locale != "" {
+		params["_locale"] = locale
+	}
+	if gender != "" {
+		params["_gender"] = gender
+	}
+	if seed > 0 {
+		params["_seed"] = seed
+	}
+	return c.makeRequest("GET", "/api/fake/persons", params, nil)
+}
+
+func (c *Client) FakeBooks(quantity int, locale string, seed int) (interface{}, error) {
+	params := map[string]interface{}{}
+	if quantity > 0 {
+		params["_quantity"] = quantity
+	}
+	if locale != "" {
+		params["_locale"] = locale
+	}
+	if seed > 0 {
+		params["_seed"] = seed
+	}
+	return c.makeRequest("GET", "/api/fake/books", params, nil)
+}
+
+func (c *Client) FakePlaces(quantity int, locale string, seed int) (interface{}, error) {
+	params := map[string]interface{}{}
+	if quantity > 0 {
+		params["_quantity"] = quantity
+	}
+	if locale != "" {
+		params["_locale"] = locale
+	}
+	if seed > 0 {
+		params["_seed"] = seed
+	}
+	return c.makeRequest("GET", "/api/fake/places", params, nil)
+}
+
 func (c *Client) FakeCompanies(quantity int, locale string, seed int) (interface{}, error) {
 	params := map[string]interface{}{}
 	if quantity > 0 {
