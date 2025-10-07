@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// Client represents the Discard API client
 type Client struct {
 	APIKey       string
 	BaseURL      string
@@ -18,6 +19,7 @@ type Client struct {
 	HTTPClient   *http.Client
 }
 
+// Config holds the configuration for the API client
 type Config struct {
 	APIKey       string
 	BaseURL      string
@@ -25,12 +27,14 @@ type Config struct {
 	Timeout      time.Duration
 }
 
+// APIResponse represents the standard API response structure
 type APIResponse struct {
 	Creator string      `json:"creator,omitempty"`
 	Result  interface{} `json:"result,omitempty"`
 	Status  bool        `json:"status,omitempty"`
 }
 
+// NewClient creates a new Discard API client
 func NewClient(config Config) (*Client, error) {
 	if config.APIKey == "" {
 		return nil, fmt.Errorf("API key is required")
@@ -53,12 +57,15 @@ func NewClient(config Config) (*Client, error) {
 	}, nil
 }
 
+// buildURL constructs the full URL with query parameters
 func (c *Client) buildURL(endpoint string, params map[string]interface{}) string {
 	u, _ := url.Parse(c.BaseURL + endpoint)
 	q := u.Query()
 	
+	// Add API key
 	q.Set("apikey", c.APIKey)
 	
+	// Add other parameters
 	for key, value := range params {
 		if value != nil {
 			q.Set(key, fmt.Sprintf("%v", value))
@@ -69,6 +76,7 @@ func (c *Client) buildURL(endpoint string, params map[string]interface{}) string
 	return u.String()
 }
 
+// makeRequest performs the HTTP request
 func (c *Client) makeRequest(method, endpoint string, params map[string]interface{}, body interface{}) (interface{}, error) {
 	var req *http.Request
 	var err error
@@ -128,29 +136,39 @@ func (c *Client) makeRequest(method, endpoint string, params map[string]interfac
 	return apiResp, nil
 }
 
-func (c *Client) makeFormDataRequest(endpoint string, params map[string]interface{}, files map[string]io.Reader) (interface{}, error) {
+// MakeFormDataRequest performs a multipart form data request
+func (c *Client) MakeFormDataRequest(endpoint string, params map[string]interface{}, files map[string]io.Reader) (interface{}, error) {
 	var buffer bytes.Buffer
 	writer := multipart.NewWriter(&buffer)
-	writer.WriteField("apikey", c.APIKey)
-  
+
+	// Add API key
+	if err := writer.WriteField("apikey", c.APIKey); err != nil {
+		return nil, fmt.Errorf("failed to write apikey field: %w", err)
+	}
+
+	// Add parameters
 	for key, value := range params {
 		if value != nil {
-			writer.WriteField(key, fmt.Sprintf("%v", value))
+			if err := writer.WriteField(key, fmt.Sprintf("%v", value)); err != nil {
+				return nil, fmt.Errorf("failed to write field %s: %w", key, err)
+			}
 		}
 	}
 
+	// Add files
 	for fieldName, file := range files {
 		part, err := writer.CreateFormFile(fieldName, fieldName)
 		if err != nil {
 			return nil, fmt.Errorf("failed to create form file: %w", err)
 		}
-		_, err = io.Copy(part, file)
-		if err != nil {
+		if _, err := io.Copy(part, file); err != nil {
 			return nil, fmt.Errorf("failed to copy file: %w", err)
 		}
 	}
 
-	writer.Close()
+	if err := writer.Close(); err != nil {
+		return nil, fmt.Errorf("failed to close writer: %w", err)
+	}
 
 	req, err := http.NewRequest("POST", c.BaseURL+endpoint, &buffer)
 	if err != nil {
@@ -184,18 +202,22 @@ func (c *Client) makeFormDataRequest(endpoint string, params map[string]interfac
 	return apiResp.Result, nil
 }
 
+// SetFullResponse sets the full response mode
 func (c *Client) SetFullResponse(value bool) {
 	c.FullResponse = value
 }
 
+// GetFullResponse gets the current full response mode
 func (c *Client) GetFullResponse() bool {
 	return c.FullResponse
 }
 
+// SetAPIKey updates the API key
 func (c *Client) SetAPIKey(apiKey string) {
 	c.APIKey = apiKey
 }
 
+// SetTimeout updates the HTTP client timeout
 func (c *Client) SetTimeout(timeout time.Duration) {
 	c.HTTPClient.Timeout = timeout
 }

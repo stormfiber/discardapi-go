@@ -1,11 +1,13 @@
 package discard
 
 import (
+	"os"
 	"testing"
 	"time"
 )
 
 func TestNewClient(t *testing.T) {
+	// Test with valid config
 	client, err := NewClient(Config{
 		APIKey: "test-key",
 	})
@@ -18,6 +20,8 @@ func TestNewClient(t *testing.T) {
 	if client.BaseURL != "https://discardapi.dpdns.org" {
 		t.Errorf("Expected default BaseURL, got '%s'", client.BaseURL)
 	}
+
+	// Test without API key
 	_, err = NewClient(Config{})
 	if err == nil {
 		t.Error("Expected error when API key is missing")
@@ -62,13 +66,19 @@ func TestBuildURL(t *testing.T) {
 	}
 }
 
+// Integration tests (require valid API key from environment)
 func TestIntegrationRandomQuote(t *testing.T) {
 	if testing.Short() {
 		t.Skip("Skipping integration test")
 	}
 
+	apiKey := os.Getenv("DISCARD_API_KEY")
+	if apiKey == "" {
+		t.Skip("Skipping integration test: DISCARD_API_KEY not set")
+	}
+
 	client, err := NewClient(Config{
-		APIKey: "YOUR_API_KEY_FOR_TESTING",
+		APIKey: apiKey,
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -77,5 +87,28 @@ func TestIntegrationRandomQuote(t *testing.T) {
 	_, err = client.RandomQuote()
 	if err != nil {
 		t.Errorf("RandomQuote failed: %v", err)
+	}
+}
+
+func TestIntegrationDadJoke(t *testing.T) {
+	if testing.Short() {
+		t.Skip("Skipping integration test")
+	}
+
+	apiKey := os.Getenv("DISCARD_API_KEY")
+	if apiKey == "" {
+		t.Skip("Skipping integration test: DISCARD_API_KEY not set")
+	}
+
+	client, err := NewClient(Config{
+		APIKey: apiKey,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	_, err = client.DadJoke()
+	if err != nil {
+		t.Errorf("DadJoke failed: %v", err)
 	}
 }
