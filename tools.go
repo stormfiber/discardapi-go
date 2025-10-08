@@ -74,10 +74,6 @@ func (c *Client) TextStats(text string) (interface{}, error) {
 	return c.makeRequest("GET", "/api/tools/string", map[string]interface{}{"text": text}, nil)
 }
 
-func (c *Client) TextStats(text string) (interface{}, error) {
-	return c.makeRequest("GET", "/api/tools/string", map[string]interface{}{"text": text}, nil)
-}
-
 func (c *Client) Wordcount(text string) (interface{}, error) {
 	return c.makeRequest("GET", "/api/word/count", map[string]interface{}{"text": text}, nil)
 }
