@@ -71,29 +71,29 @@ func (c *Client) SteelText(text1, text2 string) (interface{}, error) {
 }
 
 func (c *Client) RoyalText(text string) (interface{}, error) {
-	return c.makeRequest("GET", "/api/ephoto/royal", map[string]interface{}{"neon": neon}, nil)
+	return c.makeRequest("GET", "/api/ephoto/royal", map[string]interface{}{"text": text}, nil)
 }
 
 func (c *Client) Comic3D(text string) (interface{}, error) {
-	return c.makeRequest("GET", "/api/ephoto/comic", map[string]interface{}{"neon": neon}, nil)
+	return c.makeRequest("GET", "/api/ephoto/comic", map[string]interface{}{"text": text}, nil)
 }
 
 func (c *Client) Gaming(text string) (interface{}, error) {
-	return c.makeRequest("GET", "/api/ephoto/game", map[string]interface{}{"neon": neon}, nil)
+	return c.makeRequest("GET", "/api/ephoto/game", map[string]interface{}{"text": text}, nil)
 }
 
 func (c *Client) SandText(text string) (interface{}, error) {
-	return c.makeRequest("GET", "/api/ephoto/sand, map[string]interface{}{"neon": neon}, nil)
+	return c.makeRequest("GET", "/api/ephoto/sand", map[string]interface{}{"text": text}, nil)
 }
 
 func (c *Client) JewelEffect(text string) (interface{}, error) {
-	return c.makeRequest("GET", "/api/ephoto/jewel", map[string]interface{}{"neon": neon}, nil)
+	return c.makeRequest("GET", "/api/ephoto/jewel", map[string]interface{}{"text": text}, nil)
 }
 
 func (c *Client) GlitchText(text string) (interface{}, error) {
-	return c.makeRequest("GET", "/api/ephoto/glitch", map[string]interface{}{"neon": neon}, nil)
+	return c.makeRequest("GET", "/api/ephoto/glitch", map[string]interface{}{"text": text}, nil)
 }
 
 func (c *Client) MAvatar(text string) (interface{}, error) {
-	return c.makeRequest("GET", "/api/ephoto/mavatar", map[string]interface{}{"neon": neon}, nil)
+	return c.makeRequest("GET", "/api/ephoto/mavatar", map[string]interface{}{"text": text}, nil)
 }
