@@ -54,7 +54,10 @@ func (c *Client) ReadQR(imagePath string) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func() {
+		if cerr := file.Close(); cerr != nil {
+		}
+	}()
 	files := map[string]io.Reader{"image": file}
 	return c.MakeFormDataRequest("/api/tools/readqr", nil, files)
 }
@@ -85,7 +88,10 @@ func (c *Client) ToASCII(imagePath string) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func() {
+		if cerr := file.Close(); cerr != nil {
+		}
+	}()
 	files := map[string]io.Reader{"file": file}
 	return c.MakeFormDataRequest("/api/tools/ascii", nil, files)
 }
@@ -108,7 +114,10 @@ func (c *Client) CompressFile(filePath, t string) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func() {
+		if cerr := file.Close(); cerr != nil {
+		}
+	}()
 	params := map[string]interface{}{"type": t}
 	files := map[string]io.Reader{"file": file}
 	return c.MakeFormDataRequest("/api/compress", params, files)
@@ -119,7 +128,10 @@ func (c *Client) DecompressFile(filePath, t string) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func() {
+		if cerr := file.Close(); cerr != nil {
+		}
+	}()
 	params := map[string]interface{}{"type": t}
 	files := map[string]io.Reader{"file": file}
 	return c.MakeFormDataRequest("/api/decompress", params, files)
@@ -135,7 +147,10 @@ func (c *Client) ExifReader(imagePath string) (interface{}, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer file.Close()
+	defer func() {
+		if cerr := file.Close(); cerr != nil {
+		}
+	}()
 	files := map[string]io.Reader{"image": file}
 	return c.MakeFormDataRequest("/api/tools/exif", nil, files)
 }
