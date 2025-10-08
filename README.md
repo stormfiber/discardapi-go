@@ -133,34 +133,37 @@ client, err := discard.NewClient(config)
 ## API Categories
 
 **Islamic**
-Quran, Hadith, Prayer Times, Islamic Books
+Quran, Hadith, Prayer Times, Islamic Books and much more
 
 **AI**
-Gemini Pro, Llama, Mistral, Image Generation
+Gemini Pro, Llama, Mistral, Image Generation and much more
 
 **Downloads**
-Facebook, Instagram, TikTok, Twitter, YouTube, etc.
+Facebook, Instagram, TikTok, Twitter, YouTube and much more
 
 **URL Shortener**
 Multiple shortening services
 
 **Jokes & Quotes**
-Dad jokes, programming jokes, motivational quotes
+Dad jokes, programming jokes, motivational quotes and much more
 
 **Images**
-Random images by category
+Random images by category and much more
 
 **Image Makers**
-QR codes, avatars, carbon images
+QR codes, avatars, carbon images and much more
 
 **Faker**
-Generate fake users, addresses, companies
+Generate fake users, addresses, companies and much more
 
 **Music**
-Spotify, SoundCloud, lyrics
+Spotify, SoundCloud, Deezer, lyrics and much more
 
 **Facts**
-Date facts, year facts, math facts
+Date facts, year facts, math facts and much more
+
+**News**
+CNN & Many other news and media endpoints
 
 **Codec**
 Base64, Base32, Binary encoding and **many more**
