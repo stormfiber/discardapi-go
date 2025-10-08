@@ -33,8 +33,12 @@ func (m *mockRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) 
 	}, nil
 }
 
-func newMockClient() *Client {
-	c, _ := NewClient(Config{APIKey: "test"})
+// updated to accept *testing.T for error handling
+func newMockClient(t *testing.T) *Client {
+	c, err := NewClient(Config{APIKey: "test"})
+	if err != nil {
+		t.Fatalf("failed to create client: %v", err)
+	}
 	mock := &mockRoundTripper{}
 	c.HTTPClient.Transport = mock
 	c.SetFullResponse(true)
@@ -42,7 +46,7 @@ func newMockClient() *Client {
 }
 
 func TestMakeRequestFlexible(t *testing.T) {
-	client := newMockClient()
+	client := newMockClient(t)
 	resp, err := client.makeRequest("GET", "/api/test", nil, nil)
 	if err != nil {
 		t.Fatalf("makeRequest failed: %v", err)
@@ -57,7 +61,7 @@ func TestMakeRequestFlexible(t *testing.T) {
 }
 
 func TestMakeFormDataRequest(t *testing.T) {
-	client := newMockClient()
+	client := newMockClient(t)
 	buf := bytes.NewBufferString("dummy data")
 	files := map[string]io.Reader{"file": buf}
 	resp, err := client.MakeFormDataRequest("/api/upload", map[string]interface{}{"type": "x"}, files)
@@ -74,7 +78,7 @@ func TestMakeFormDataRequest(t *testing.T) {
 }
 
 func TestReflectionCoversAllMethods(t *testing.T) {
-	client := newMockClient()
+	client := newMockClient(t)
 	val := reflect.ValueOf(client)
 	typ := reflect.TypeOf(client)
 
@@ -100,18 +104,23 @@ func TestReflectionCoversAllMethods(t *testing.T) {
 		}
 
 		func() {
-			defer func() { recover() }()
+			defer func() { _ = recover() }()
 			m.Func.Call(args)
 		}()
 	}
 }
 
 func TestTimeoutAndConfig(t *testing.T) {
-	client, _ := NewClient(Config{APIKey: "x"})
+	client, err := NewClient(Config{APIKey: "x"})
+	if err != nil {
+		t.Fatalf("failed to create client: %v", err)
+	}
+
 	client.SetTimeout(10 * time.Second)
 	if client.HTTPClient.Timeout != 10*time.Second {
 		t.Errorf("timeout not applied properly")
 	}
+
 	client.SetFullResponse(true)
 	if !client.GetFullResponse() {
 		t.Errorf("FullResponse not set")
@@ -119,9 +128,12 @@ func TestTimeoutAndConfig(t *testing.T) {
 }
 
 func TestBuildURL(t *testing.T) {
-	client, _ := NewClient(Config{APIKey: "x"})
-	urlStr := client.buildURL("/api/test", map[string]interface{}{"q": "1", "x": 5})
+	client, err := NewClient(Config{APIKey: "x"})
+	if err != nil {
+		t.Fatalf("failed to create client: %v", err)
+	}
 
+	urlStr := client.buildURL("/api/test", map[string]interface{}{"q": "1", "x": 5})
 	u, err := url.Parse(urlStr)
 	if err != nil {
 		t.Fatalf("failed to parse URL: %v", err)
@@ -138,6 +150,7 @@ func TestBuildURL(t *testing.T) {
 		t.Errorf("expected x=5, got %s", query.Get("x"))
 	}
 }
+
 
 /*
 package discard
