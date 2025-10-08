@@ -1,6 +1,8 @@
 package discard
 
-import "io"
+import (
+	"io"
+)
 
 func (c *Client) QRCode(text string) (interface{}, error) {
 	return c.makeRequest("GET", "/api/maker/qrcode", map[string]interface{}{"text": text}, nil)
