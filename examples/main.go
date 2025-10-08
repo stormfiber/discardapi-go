@@ -11,7 +11,7 @@ import (
 func main() {
 	// Create client
 	client, err := discard.NewClient(discard.Config{
-		APIKey:       "qasim",
+		APIKey:       "YOUR_KEY_HERE",
 		FullResponse: false,
 		Timeout:      30 * time.Second,
 	})
