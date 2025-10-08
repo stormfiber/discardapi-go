@@ -24,8 +24,8 @@ func (c *Client) GeneralJoke() (interface{}, error) {
 	return c.makeRequest("GET", "/api/joke/general", nil, nil)
 }
 
-func (c *Client) CodingJoke() (interface{}, error) {
-	return c.makeRequest("GET", "/api/joke/coding", nil, nil)
+func (c *Client) SpookyJoke() (interface{}, error) {
+	return c.makeRequest("GET", "/api/joke/spooky", nil, nil)
 }
 
 func (c *Client) KnockJoke() (interface{}, error) {
