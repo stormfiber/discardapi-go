@@ -2,9 +2,9 @@ name: Test
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   test:
@@ -29,8 +29,12 @@ jobs:
         shell: bash
         run: go test -v -short -race -coverprofile=coverage.out -covermode=atomic ./...
 
-      - name: Upload coverage
-        if: matrix.os == 'ubuntu-latest' && matrix.go-version == '1.22.x'
-        uses: codecov/codecov-action@v3
+      - name: Upload coverage to Codecov
+        if: matrix.os == 'ubuntu-latest' && matrix.go-version == '1.21.x'
+        uses: codecov/codecov-action@v5
         with:
           files: ./coverage.out
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: true
+          verbose: true
+          
