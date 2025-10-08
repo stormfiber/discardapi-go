@@ -1,4 +1,4 @@
-package Discard 
+package discard 
 
 func (c *Client) Android1(query string) (interface{}, error) {
 	return c.makeRequest("GET", "/api/apk/search/android1", map[string]interface{}{"query": query}, nil)
