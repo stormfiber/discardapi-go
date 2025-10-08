@@ -10,7 +10,6 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/stormfiber/discardapi-go)](https://goreportcard.com/report/github.com/stormfiber/discardapi-go)
 [![Test Status](https://github.com/stormfiber/discardapi-go/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/stormfiber/discardapi-go/actions/workflows/test.yml)
 [![Lint Status](https://github.com/stormfiber/discardapi-go/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/stormfiber/discardapi-go/actions/workflows/lint.yml)
-[![Codecov](https://codecov.io/gh/stormfiber/discardapi-go/branch/main/graph/badge.svg)](https://codecov.io/gh/stormfiber/discardapi-go)
 ![GitHub release](https://img.shields.io/github/v/release/stormfiber/discardapi-go)
 ![Go Version](https://img.shields.io/github/go-mod/go-version/stormfiber/discardapi-go)
 [![License](https://img.shields.io/github/license/stormfiber/discardapi-go)](LICENSE)
@@ -46,6 +45,12 @@ Explore our complete catalog and documentation at [discardapi.dpdns.org](https:/
 - For extensive usage and advanced features, upgrade to a PRO or VIP plan offering higher limits, faster response times, and premium feature access.
 
 ## Installation
+
+Requirements
+
+- Go 1.19 or later
+
+- Internet connection (for API calls)
 
 ```bash
 go get github.com/stormfiber/discardapi-go
