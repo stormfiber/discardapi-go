@@ -1,3 +1,4 @@
+/*
 package discard
 
 import (
@@ -150,9 +151,9 @@ func TestBuildURL(t *testing.T) {
 		t.Errorf("expected x=5, got %s", query.Get("x"))
 	}
 }
+*/
 
 
-/*
 package discard
 
 import (
@@ -276,4 +277,3 @@ func TestIntegrationDadJoke(t *testing.T) {
 		t.Errorf("DadJoke failed: %v", err)
 	}
 }
-*/
