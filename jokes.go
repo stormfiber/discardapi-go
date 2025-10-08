@@ -15,3 +15,19 @@ func (c *Client) RandomJoke() (interface{}, error) {
 func (c *Client) DarkJoke() (interface{}, error) {
 	return c.makeRequest("GET", "/api/joke/dark", nil, nil)
 }
+
+func (c *Client) CodingJoke() (interface{}, error) {
+	return c.makeRequest("GET", "/api/joke/coding", nil, nil)
+}
+
+func (c *Client) GeneralJoke() (interface{}, error) {
+	return c.makeRequest("GET", "/api/joke/general", nil, nil)
+}
+
+func (c *Client) CodingJoke() (interface{}, error) {
+	return c.makeRequest("GET", "/api/joke/coding", nil, nil)
+}
+
+func (c *Client) KnockJoke() (interface{}, error) {
+	return c.makeRequest("GET", "/api/joke/knock", nil, nil)
+}
