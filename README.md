@@ -2,6 +2,25 @@
 
 Official Go SDK for the Discard API providing access to 500+ endpoints across multiple categories.
 
+## DiscardAPI Go Client
+
+[![Go Reference](https://pkg.go.dev/badge/github.com/stormfiber/discardapi-go.svg)](https://pkg.go.dev/github.com/stormfiber/discardapi-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/stormfiber/discardapi-go)](https://goreportcard.com/report/github.com/stormfiber/discardapi-go)
+[![Test Status](https://github.com/stormfiber/discardapi-go/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/stormfiber/discardapi-go/actions/workflows/test.yml)
+[![Lint Status](https://github.com/stormfiber/discardapi-go/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/stormfiber/discardapi-go/actions/workflows/lint.yml)
+[![Codecov](https://codecov.io/gh/stormfiber/discardapi-go/branch/main/graph/badge.svg)](https://codecov.io/gh/stormfiber/discardapi-go)
+![GitHub release](https://img.shields.io/github/v/release/stormfiber/discardapi-go)
+![Go Version](https://img.shields.io/github/go-mod/go-version/stormfiber/discardapi-go)
+[![License](https://img.shields.io/github/license/stormfiber/discardapi-go)](LICENSE)
+![Workflow Status](https://img.shields.io/github/actions/workflow/status/stormfiber/discardapi-go/test.yml?branch=main)
+
+---
+
+## Overview
+
+A Go client library for interacting with the **Discard API**.  
+Provides a simple, typed interface for making API calls and handling responses efficiently.
+
 ## Installation
 
 ```bash
