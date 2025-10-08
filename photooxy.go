@@ -22,21 +22,21 @@ func (c *Client) TikTokEffect(text1, text2 string) (interface{}, error) {
 }
 
 func (c *Client) NeoEffect(text string) (interface{}, error) {
-	return c.makeRequest("GET", "/api/photo/neon", map[string]interface{}{"neon": neon}, nil)
+	return c.makeRequest("GET", "/api/photo/neon", map[string]interface{}{"text": text}, nil)
 }
 
 func (c *Client) Warface(text string) (interface{}, error) {
-	return c.makeRequest("GET", "/api/photo/warface", map[string]interface{}{"neon": neon}, nil)
+	return c.makeRequest("GET", "/api/photo/warface", map[string]interface{}{"text": text}, nil)
 }
 
 func (c *Client) Warface2(text string) (interface{}, error) {
-	return c.makeRequest("GET", "/api/photo/warface2", map[string]interface{}{"neon": neon}, nil)
+	return c.makeRequest("GET", "/api/photo/warface2", map[string]interface{}{"text": text}, nil)
 }
 
 func (c *Client) League(text string) (interface{}, error) {
-	return c.makeRequest("GET", "/api/photo/league", map[string]interface{}{"neon": neon}, nil)
+	return c.makeRequest("GET", "/api/photo/league", map[string]interface{}{"text": text}, nil)
 }
 
 func (c *Client) DarkMetal(text string) (interface{}, error) {
-	return c.makeRequest("GET", "/api/photo/darkmetal", map[string]interface{}{"neon": neon}, nil)
+	return c.makeRequest("GET", "/api/photo/darkmetal", map[string]interface{}{"text": text}, nil)
 }
